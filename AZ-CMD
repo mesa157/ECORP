@@ -1,0 +1,5 @@
+az acr build --registry $ACRNAME --image ecommerce-marketplace/userservice:latest ./UserService/
+az acr build --registry $ACRNAME --image ecommerce-marketplace/productcatalog:latest ./ProductCatalog/
+az acr build --registry $ACRNAME --image ecommerce-marketplace/paymentservice:latest ./PaymentService/
+az acr build --registry $ACRNAME --image ecommerce-marketplace/shoppingbasket:latest ./ShoppingBasket/
+az acr build --registry $ACRNAME --image ecommerce-marketplace/unifiedfrontend:latest ./UnifiedFrontend/
