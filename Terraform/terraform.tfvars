@@ -1,0 +1,8 @@
+subscription_id      = "ec81e1cc-dbff-4a8c-a936-634b895b874f"
+resource_group_name  = "win10_group"
+location             = "West Europe"
+vnet_name            = "win10-vnet"
+aks_subnet_name      = "aks-subnet"
+acr_subnet_name      = "acr-subnet"
+acr_name             = "win10acr"
+aks_name             = "win10-aks"

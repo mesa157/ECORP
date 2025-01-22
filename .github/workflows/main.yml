@@ -1,0 +1,50 @@
+name: Deploy Terraform
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Terraform
+      uses: hashicorp/setup-terraform@v2
+      with:
+        terraform_version: latest
+
+    - name: Extract Azure Credentials
+      id: azure_creds
+      run: |
+        echo "${{ secrets.AZURE_CREDENTIALS }}" > azure_credentials.json
+        export ARM_CLIENT_ID=$(jq -r '.ARM_CLIENT_ID' azure_credentials.json)
+        export ARM_CLIENT_SECRET=$(jq -r '.ARM_CLIENT_SECRET' azure_credentials.json)
+        export ARM_SUBSCRIPTION_ID=$(jq -r '.ARM_SUBSCRIPTION_ID' azure_credentials.json)
+        export ARM_TENANT_ID=$(jq -r '.ARM_TENANT_ID' azure_credentials.json)
+        echo "ARM_CLIENT_ID=$ARM_CLIENT_ID" >> $GITHUB_ENV
+        echo "ARM_CLIENT_SECRET=$ARM_CLIENT_SECRET" >> $GITHUB_ENV
+        echo "ARM_SUBSCRIPTION_ID=$ARM_SUBSCRIPTION_ID" >> $GITHUB_ENV
+        echo "ARM_TENANT_ID=$ARM_TENANT_ID" >> $GITHUB_ENV
+      env:
+        AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
+
+    - name: Terraform Init
+      env:
+        ARM_CLIENT_ID: ${{ env.ARM_CLIENT_ID }}
+        ARM_CLIENT_SECRET: ${{ env.ARM_CLIENT_SECRET }}
+        ARM_SUBSCRIPTION_ID: ${{ env.ARM_SUBSCRIPTION_ID }}
+        ARM_TENANT_ID: ${{ env.ARM_TENANT_ID }}
+      run: terraform init
+
+    - name: Terraform Apply
+      env:
+        ARM_CLIENT_ID: ${{ env.ARM_CLIENT_ID }}
+        ARM_CLIENT_SECRET: ${{ env.ARM_CLIENT_SECRET }}
+        ARM_SUBSCRIPTION_ID: ${{ env.ARM_SUBSCRIPTION_ID }}
+        ARM_TENANT_ID: ${{ env.ARM_TENANT_ID }}
+      run: terraform apply -auto-approve

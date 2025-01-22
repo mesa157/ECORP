@@ -1,0 +1,33 @@
+﻿@model UnifiedFrontend.Models.PaymentModel.Payment
+
+<div class="container mt-4">
+    <h1>Create Payment</h1>
+
+    <form asp-action="Create" method="post">
+        <div class="mb-3">
+            <label asp-for="Amount" class="form-label"></label>
+            <input asp-for="Amount" class="form-control" />
+            <span asp-validation-for="Amount" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Currency" class="form-label"></label>
+            <input asp-for="Currency" class="form-control" />
+            <span asp-validation-for="Currency" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Method" class="form-label"></label>
+            <select asp-for="Method" class="form-control">
+                <option value="CreditCard">Credit Card</option>
+                <option value="PayPal">PayPal</option>
+                <option value="BankTransfer">Bank Transfer</option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label asp-for="PaymentMethodToken" class="form-label"></label>
+            <input asp-for="PaymentMethodToken" class="form-control" />
+            <span asp-validation-for="PaymentMethodToken" class="text-danger"></span>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+

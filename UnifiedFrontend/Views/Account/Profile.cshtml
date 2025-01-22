@@ -1,0 +1,81 @@
+﻿@model UnifiedFrontend.Models.UserModel.UserProfileDto
+@{
+    ViewBag.Title = "Profile";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="mb-0">Your Profile</h3>
+                </div>
+                <div class="card-body">
+                    <!-- User Information Form -->
+                    <form method="post" asp-action="UpdateProfile">
+                        <div class="form-group">
+                            <label for="name">Full Name</label>
+                            <input type="text" id="name" name="Name" class="form-control" value="@Model.Name" required />
+                        </div>
+                        <div class="form-group mt-3">
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" name="Email" class="form-control" value="@Model.Email" required />
+                        </div>
+                        <div class="form-group mt-3">
+                            <label for="phone">Phone Number</label>
+                            <input type="text" id="phone" name="Phone" class="form-control" value="@Model.Phone" />
+                        </div>
+                        <div class="form-group mt-3">
+                            <label for="address">Address</label>
+                            <textarea id="address" name="Address" class="form-control">@Model.Address</textarea>
+                        </div>
+                        <button type="submit" class="btn btn-success mt-3">Save Changes</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="card mt-4">
+                <div class="card-header bg-secondary text-white">
+                    <h3 class="mb-0">Change Password</h3>
+                </div>
+                <div class="card-body">
+                    <!-- Change Password Form -->
+                    <form method="post" asp-action="ChangePassword">
+                        <div class="form-group">
+                            <label for="currentPassword">Current Password</label>
+                            <input type="password" id="currentPassword" name="CurrentPassword" class="form-control" required />
+                        </div>
+                        <div class="form-group mt-3">
+                            <label for="newPassword">New Password</label>
+                            <input type="password" id="newPassword" name="NewPassword" class="form-control" required />
+                        </div>
+                        <div class="form-group mt-3">
+                            <label for="confirmPassword">Confirm New Password</label>
+                            <input type="password" id="confirmPassword" name="ConfirmPassword" class="form-control" required />
+                        </div>
+                        <button type="submit" class="btn btn-warning mt-3">Change Password</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="card mt-4">
+                <div class="card-header bg-danger text-white">
+                    <h3 class="mb-0">Delete Account</h3>
+                </div>
+                <div class="card-body">
+                    <!-- Delete Account Form -->
+                    <form method="post" asp-action="DeleteAccount">
+                        <button type="submit" class="btn btn-danger">Delete Account</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="mt-4 text-center">
+                <a asp-controller="Payment" asp-action="Index" class="btn btn-info">
+                    View Payment History
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

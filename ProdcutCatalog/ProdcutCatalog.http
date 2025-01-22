@@ -1,0 +1,6 @@
+@ProdcutCatalog_HostAddress = http://localhost:5023
+
+GET {{ProdcutCatalog_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

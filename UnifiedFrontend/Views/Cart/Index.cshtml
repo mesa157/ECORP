@@ -1,0 +1,72 @@
+﻿@model UnifiedFrontend.Models.CartModel.ShoppingBasket
+
+<h1>Your Shopping Cart</h1>
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+}
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+}
+
+@if (Model.BasketLines != null && Model.BasketLines.Any())
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Total</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var line in Model.BasketLines)
+            {
+                <tr>
+                    <td>@(string.IsNullOrEmpty(line.Name) ? "Unknown Product" : line.Name)</td>
+                    <td>
+                        <form method="post" asp-action="UpdateQuantity" asp-controller="Cart">
+                            <input type="hidden" name="userId" value="@Model.UserId" />
+                            <input type="hidden" name="productId" value="@line.ProductId" />
+                            <input type="number" name="quantity" value="@line.Quantity" min="1" class="form-control" style="width: 80px;" />
+                            <button type="submit" class="btn btn-sm btn-primary">Update</button>
+                        </form>
+                    </td>
+                    <td>@line.Price.ToString("C")</td>
+                    <td>@(line.Quantity * line.Price).ToString("C")</td>
+                    <td>
+                        <form method="post" asp-action="RemoveFromCart" asp-controller="Cart">
+                            <input type="hidden" name="userId" value="@Model.UserId" />
+                            <input type="hidden" name="productId" value="@line.ProductId" />
+                            <button type="submit" class="btn btn-sm btn-danger">Remove</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div class="summary">
+        <h3>Cart Summary</h3>
+        <p><strong>Total Items:</strong> @Model.BasketLines.Sum(line => line.Quantity)</p>
+        <p><strong>Total Price:</strong> @Model.TotalPrice.ToString("C")</p>
+        <form method="post" asp-action="Checkout" asp-controller="Cart">
+            <input type="hidden" name="userId" value="@Model.UserId" />
+            <button type="submit" class="btn btn-success">Proceed to Checkout</button>
+        </form>
+    </div>
+
+    <div class="continue-shopping">
+        <a href="/products" class="btn btn-secondary">Continue Shopping</a>
+    </div>
+}
+else
+{
+    <div class="alert alert-info">
+        Your cart is empty. <a href="/products">Start shopping</a> to add items to your cart.
+    </div>
+}

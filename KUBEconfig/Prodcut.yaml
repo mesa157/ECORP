@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: product-catalog
+  namespace: ecommerce
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: product-catalog
+  template:
+    metadata:
+      labels:
+        app: product-catalog
+    spec:
+      containers:
+      - name: product-catalog
+        image: win10acr.azurecr.io/ecommerce-marketplace/product-catalog:latest
+        ports:
+        - containerPort: 80
+        env:
+        - name: ASPNETCORE_ENVIRONMENT
+          value: "Production"
+        imagePullSecrets:
+        - name: acr-secret
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: product-catalog
+  namespace: ecommerce
+spec:
+  type: ClusterIP
+  selector:
+    app: product-catalog
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80

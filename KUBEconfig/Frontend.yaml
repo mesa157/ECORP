@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: unified-frontend
+  namespace: ecommerce
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: unified-frontend
+  template:
+    metadata:
+      labels:
+        app: unified-frontend
+    spec:
+      containers:
+      - name: unified-frontend
+        image: win10acr.azurecr.io/ecommerce-marketplace/unified-frontend:latest
+        ports:
+        - containerPort: 80
+        env:
+        - name: ASPNETCORE_ENVIRONMENT
+          value: "Production"
+        imagePullSecrets:
+        - name: acr-secret
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: unified-frontend
+  namespace: ecommerce
+spec:
+  type: LoadBalancer
+  selector:
+    app: unified-frontend
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80

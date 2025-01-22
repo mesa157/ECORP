@@ -1,0 +1,105 @@
+﻿@model List<UnifiedFrontend.Models.ProductCatalogModel.ProductViewModel>
+
+@{
+    ViewBag.Title = "Product List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1 class="text-center my-4">Our Products</h1>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div id="carouselExampleIndicators" class="carousel slide mb-4" data-bs-ride="carousel">
+                <div class="carousel-indicators">
+                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                </div>
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        @* <img src="https://via.placeholder.com/1200x400" onerror="this.src='/images/default-technology.jpg'" class="d-block w-100" alt="Technology"> *@
+                    </div>
+                    <div class="carousel-item">
+                        @* <img src="https://via.placeholder.com/1200x400" onerror="this.src='/images/default-nature.jpg'" class="d-block w-100" alt="Nature"> *@
+                    </div>
+                    <div class="carousel-item">
+                        @* <img src="https://via.placeholder.com/1200x400" onerror="this.src='/images/default-business.jpg'" class="d-block w-100" alt="Business"> *@
+                    </div>
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container mb-4">
+    <div class="row">
+        <div class="col-md-6">
+            <form method="get" action="@Url.Action("Index", "Products")" class="d-flex">
+                <input type="text" name="search" class="form-control me-2" placeholder="Search by name or category" />
+                <button type="submit" class="btn btn-primary">Search</button>
+            </form>
+        </div>
+        <div class="col-md-6 text-end">
+            <form method="get" action="@Url.Action("Index", "Products")" class="d-flex justify-content-end">
+                <select name="sort" class="form-select me-2" onchange="this.form.submit()">
+                    <option value="">Sort By</option>
+                    <option value="name">Name</option>
+                    <option value="price">Price</option>
+                    <option value="category">Category</option>
+                </select>
+            </form>
+        </div>
+    </div>
+</div>
+
+@if (Model != null && Model.Any())
+{
+    <div class="row">
+        @foreach (var product in Model)
+        {
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <img src="@product.ImageUrl" class="card-img-top" alt="@product.Name" style="max-height: 200px; object-fit: cover;">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">@product.Name</h5>
+                        <p class="card-text"><strong>Price:</strong> $@product.Price</p>
+                        <p class="card-text"><strong>Category:</strong> @product.CategoryName</p>
+                        <p class="card-text">@product.Description</p>
+                        <form method="post" action="/Cart/AddToCart" class="mt-auto">
+                            <input type="hidden" name="productId" value="@product.ProductId" />
+                            <div class="input-group mb-3">
+                                <label class="input-group-text" for="quantity-@product.ProductId">Quantity:</label>
+                                <input type="number" name="quantity" id="quantity-@product.ProductId" class="form-control" value="1" min="1" />
+                            </div>
+                            <button type="submit" class="btn btn-success w-100">Add to Cart</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <div class="alert alert-info text-center" role="alert">
+        No products available.
+    </div>
+}
+
+<style>
+    .card {
+        transition: transform 0.2s;
+    }
+
+        .card:hover {
+            transform: scale(1.05);
+        }
+</style>

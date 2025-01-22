@@ -1,0 +1,28 @@
+﻿@model UnifiedFrontend.Models.PaymentModel.Payment
+
+<div class="container mt-4">
+    <h1>Payment Details</h1>
+
+    <table class="table">
+        <tr>
+            <th>ID</th>
+            <td>@Model.Id</td>
+        </tr>
+        <tr>
+            <th>Amount</th>
+            <td>@Model.Amount</td>
+        </tr>
+        <tr>
+            <th>Currency</th>
+            <td>@Model.Currency</td>
+        </tr>
+        <tr>
+            <th>Status</th>
+            <td>@Model.Status</td>
+        </tr>
+        <tr>
+            <th>Transaction ID</th>
+            <td>@Model.TransactionId</td>
+        </tr>
+    </table>
+</div>
